@@ -1,0 +1,18 @@
+Create a "Max Dome" size
+Find out how many "Max" domes we'd need to get the area requirement for lab and farm
+	(e.g. Farm Area=200m^2, Max Area = 100m^2, need 2 domes / Lab Area = 5m^2, Max Area = 100m^2, need 1 dome)
+
+Find area of resulting dome for each type based on how many we'd need
+	(e.g. Farm Dome Area = 100m^2 / Lab Area = 5m^2)
+	
+Find volume of material to make each dome with the given area 
+
+Find volume of hub dome (static)
+
+Find volume of all the connector tubes required
+
+Total all the volumes up based on the max radius given, find the minimum volume and the corresponding radius
+
+Issues:
+Required areas that are too small result in a radius for the dome that is smaller than the connection tubes.
+Need to create a minimum dome size as well (something like 2.5m interior radius)

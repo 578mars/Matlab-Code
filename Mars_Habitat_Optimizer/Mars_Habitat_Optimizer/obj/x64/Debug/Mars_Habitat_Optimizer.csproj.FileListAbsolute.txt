@@ -1,0 +1,7 @@
+C:\Users\Derrik\Documents\School\ME-578\578MarsHut\Mars_Habitat_Optimizer\Mars_Habitat_Optimizer\bin\x64\Debug\Mars_Habitat_Optimizer.exe.config
+C:\Users\Derrik\Documents\School\ME-578\578MarsHut\Mars_Habitat_Optimizer\Mars_Habitat_Optimizer\bin\x64\Debug\Mars_Habitat_Optimizer.exe
+C:\Users\Derrik\Documents\School\ME-578\578MarsHut\Mars_Habitat_Optimizer\Mars_Habitat_Optimizer\bin\x64\Debug\Mars_Habitat_Optimizer.pdb
+C:\Users\Derrik\Documents\School\ME-578\578MarsHut\Mars_Habitat_Optimizer\Mars_Habitat_Optimizer\obj\x64\Debug\Mars_Habitat_Optimizer.csproj.CoreCompileInputs.cache
+C:\Users\Derrik\Documents\School\ME-578\578MarsHut\Mars_Habitat_Optimizer\Mars_Habitat_Optimizer\obj\x64\Debug\Mars_Habitat_Optimizer.exe
+C:\Users\Derrik\Documents\School\ME-578\578MarsHut\Mars_Habitat_Optimizer\Mars_Habitat_Optimizer\obj\x64\Debug\Mars_Habitat_Optimizer.pdb
+C:\Users\Derrik\Documents\School\ME-578\578MarsHut\Mars_Habitat_Optimizer\Mars_Habitat_Optimizer\obj\x64\Debug\Mars_Habitat_Optimizer.csprojResolveAssemblyReference.cache
