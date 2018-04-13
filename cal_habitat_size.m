@@ -15,7 +15,7 @@ A_storage = pi*storage_radius^2;
 
 %Test different maximum radii to find the one that produces the lowest
 %total volume of material necessary
-for i=2:.01:60
+for i=2:.01:15
     
 %Set maximum radius of the dome in meters    
 max_radius(count) = i; %m
