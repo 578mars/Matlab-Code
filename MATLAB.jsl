@@ -1,0 +1,19 @@
+app_path = Substr(Get Default Directory(), 2, 999);
+
+if(matlab is connected(), , matlab connect());
+Matlab Execute({}, {}, "cd " || app_path);
+MATLAB Execute({}, {test}, "test = cal_water(10,10)");
+matlab execute({}, {Habitat_material_volume, 
+					Total_cost, 
+					opt_num_farm_domes,
+					opt_num_lab_domes, 
+					opt_num_storage_domes,
+					farm_rad, lab_rad, 
+					storage_rad, 
+					tube_length, 
+					tube_rad, 
+					barracks_length, 
+					barracks_width, 
+					barracks_height},
+					"[Habitat_material_volume, Total_cost, opt_num_farm_domes, opt_num_lab_domes, opt_num_storage_domes, farm_rad, lab_rad, storage_rad, tube_length, tube_rad, barracks_length, barracks_width, barracks_height] = cal_main(10, 10, 10)");
+matlab term();
