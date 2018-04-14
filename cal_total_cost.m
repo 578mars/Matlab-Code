@@ -12,7 +12,7 @@ habitat_material_cost = 50; %$/kg (approximate)
 
 %Define cost of FOOD
 num_meals = vol_food/vol_food_pm;
-food_mass = num_meals*.83; %According to paper, 1 meal is .83kg (with packaging included)
+food_mass = num_meals*.83/3; %According to paper, 1 day allotment per person is .83kg (with packaging included)
 food_cost_per_kg = 10; %$/kg (total guess)
 
 %Define cost of LAB EQUIPMENT
