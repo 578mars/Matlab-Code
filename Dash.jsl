@@ -3,11 +3,17 @@ dt = New Table("checked points",
 	New Column("N_People", numeric),
 	New Column("Duration", numeric),
 	New Column("N_lab_equip", numeric),
-	New Column("Baracks Vol", numeric),
-	New Column("Farm Radius", numeric),
-	New Column("Lab Radius", numeric),
-	New Column("Storage Radius", numeric),
-	New Column("Total Cost", numeric));
+	
+	New Column("Barracks_Vol", numeric),
+	New Column("Farm_Radius", numeric),
+	New Column("Lab_Radius", numeric),
+	New Column("Storage_Radius", numeric),
+	
+	New Column("N_Farms", numeric),
+	New Column("N_Labs", numeric),
+	New Column("N_Storage", numeric),
+	
+	New Column("Total_Cost", numeric));
 app_path = Substr(Get Default Directory(), 2, 999);
 huts = Scene Display List();
 nPeople = 20;
@@ -169,7 +175,9 @@ getValues = Function({num_people, duration, lab_equip},
 						barracks_height},
 						"[Habitat_material_volume, Total_cost, opt_num_farm_domes, opt_num_lab_domes, opt_num_storage_domes, farm_rad, lab_rad, storage_rad, tube_length, tube_rad, barracks_length, barracks_width, barracks_height] = cal_main(" || char(num_people) ||", "||char(duration)||", "|| char(lab_equip)||")");
 	drawStation(barracks_length, barracks_width, barracks_height, lab_rad, farm_rad, storage_rad, tube_rad, tube_length, opt_num_farm_domes, opt_num_lab_domes, opt_num_storage_domes);
-	dt << add rows({:N_people=num_people, :Duration=duration, :N_lab_equip=lab_equip})
+	dt << add rows({:N_people=num_people, :Duration=duration, :N_lab_equip=lab_equip, :Barracks_Vol = barracks_length*barracks_width*barracks_height,
+					:Farm_Radius=farm_rad, :Lab_Radius=lab_rad, :Storage_Radius=storage_rad, :N_Farms=opt_num_farm_domes, :N_Labs=opt_num_lab_domes,
+					:N_Storage=opt_num_storage_domes, :Total_Cost=Total_cost});
 );
 
 
