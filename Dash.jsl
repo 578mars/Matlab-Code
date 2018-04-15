@@ -1,10 +1,28 @@
 Clear Globals();
 app_path = Substr(Get Default Directory(), 2, 999);
 huts = Scene Display List();
+nPeople = 20;
+nWeeks = 20;
+nlabEquip = 20;
 
 // make the window layout
 scene = Scene Box(600, 600);
-New Window("Huts", Panel Box("huts", scene));
+personSlider = SliderBox(1, 100, nPeople, );
+personSlider << Set Width(300);
+personVal = H List Box(Text Box("Num People"), personSlider);
+
+durationSlider = SliderBox(7, 400, nWeeks, );
+durationSlider << Set Width(300);
+durationVal = H List Box(Text Box("Mission Time (weeks)"), durationSlider);
+
+labSlider = SliderBox(0, 50, nlabEquip, );
+labSlider << Set Width(300);
+labVal = H List Box(Text Box("Num Lab Equip"), labSlider);
+
+calc = Button Box("Calculate", getValues(nPeople, nWeeks, nlabEquip));
+
+
+New Window("Huts", Panel Box("huts", scene, personVal, durationVal, labVal, calc));
 
 drawHab = function({len, width, height, drawHabScene},
 	drawHabScene << Begin(Quad_strip);
@@ -30,6 +48,7 @@ drawHab = function({len, width, height, drawHabScene},
 	drawHabScene << vertex(-len/2, -width/2, Height);
 	drawHabScene << end();
 );
+
 
 drawStation = Function( {habLen, habWidth, habHeight, labRad, farmRad, stoRad, tubeRad, tubeLen, numFarm, numLab, numStorage},
 	nSlices = 25;
@@ -115,12 +134,15 @@ drawStation = Function( {habLen, habWidth, habHeight, labRad, farmRad, stoRad, t
 
 
 	scene << Perspective( 55, 1, 4000 );
-	scene << LookAt( 0, -80, 88.5, 0, 0, 0, 0, 0, 1 );
+	scene << LookAt( 80, -180, 188.5, 0, 0, 0, 0, 0, 1 );
 	scene << ArcBall( huts, 60);
 	scene << Update;
 );
 
 getValues = Function({num_people, duration, lab_equip},
+	num_people = floor(num_people);
+	duration = floor(duration);
+	lab_equip = floor(lab_equip);
 	if(matlab is connected(), , matlab connect());
 	Matlab Execute({}, {}, "cd " || app_path);
 	MATLAB Execute({}, {test}, "test = cal_water(10,10)");
@@ -143,4 +165,4 @@ getValues = Function({num_people, duration, lab_equip},
 
 //{habLen, habWidth, habHeight, labRad, farmRad, stoRad, tubeRad, tubeLen, numFarm, numLab, numStorage}
 //drawStation(1.2, 1.5, 0.35, 0.3, 0.4, 0.5, 0.1, 0.2, 5, 3, 10)
-getValues(50, 60, 300);
+getValues(nPeople, nWeeks, nlabEquip);
