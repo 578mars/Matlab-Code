@@ -22,7 +22,7 @@ vol_pp = 3.45/(1+exp(-.035338272*(duration-46.375824723))); %Based on JMP model
 [person_water_vol, person_water_mass] = cal_water(people, duration);
 
 %Calculate the weight needed for the water recycling equipment
-recycle_equip_mass = cal_water_recycle_weight(people, duration);
+recycle_equip_mass, recycle_equip_power = cal_water_recycle_weight(people, duration);
 
 %Calculate the Required LAB AREA (m^2)
 lab_area = cal_lab_size(people, lab_equip);
@@ -39,7 +39,7 @@ barracks_width = barracks_data(2);
 barracks_height = barracks_data(3);
 barracks_material_vol = barracks_data(4);
 
-%Caculate power requirements
+
 
 %Calculate volume of food per day per person
 vol_per_meal = .3*.15*.03; %m^3
@@ -70,6 +70,8 @@ if duration > 13
     
     %Assuming no farm, calculate material needed for everything else
     [opt_num_farm_domes_nf, opt_num_lab_domes_nf, opt_num_storage_domes_nf, farm_rad_nf, lab_rad_nf, storage_rad_nf, tube_length_nf, tube_rad_nf, fls_material_vol_nf] = cal_habitat_size(farm_area_nf, lab_area, wall_thickness, vol_food_mars_nf);
+    %Caculate power requirements with no farm
+    [total_daily_power_nf, farm_panels_nf, total_panels_nf, farm_panel_weight_nf, total_panel_weight_nf] = cal_power(people, farm_area_nf, barracks_length, barracks_width, lab_area, storage_rad_nf, recycle_equip_power);
     
     %Calculate cost of not using farms but taking food
     Habitat_material_volume_nf = barracks_material_vol + fls_material_vol_nf;
@@ -89,6 +91,9 @@ if duration > 13
     %Call function to calculate the needed volume of material to build the
     %farm, lab, and storage dome along with the connecting tubes
     [opt_num_farm_domes_f, opt_num_lab_domes_f, opt_num_storage_domes_f, farm_rad_f, lab_rad_f, storage_rad_f, tube_length_f, tube_rad_f, fls_material_vol_f] = cal_habitat_size(farm_area, lab_area, wall_thickness, vol_food_mars_f);
+    %Caculate power requirements with a farm
+    [total_daily_power_f, farm_panels_f, total_panels_f, farm_panel_weight_f, total_panel_weight_f] = cal_power(people, farm_area, barracks_length, barracks_width, lab_area, storage_rad_f, recycle_equip_power);
+    
     
     %Calculate the total volume of habitat material needed for the entire
     %structure
