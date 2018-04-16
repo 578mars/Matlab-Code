@@ -18,6 +18,12 @@ wall_thickness = .05;
 %Based on input, calculate the volume per person needed using JMP model
 vol_pp = 3.45/(1+exp(-.035338272*(duration-46.375824723))); %Based on JMP model
 
+%Calculate the water needed for the mission
+[person_water_vol, person_water_mass] = cal_water(people, duration);
+
+%Calculate the weight needed for the water recycling equipment
+recycle_equip_mass = cal_water_recycle_weight(people, duration);
+
 %Calculate the Required LAB AREA (m^2)
 lab_area = cal_lab_size(people, lab_equip);
 
@@ -32,6 +38,8 @@ barracks_length = barracks_data(1);
 barracks_width = barracks_data(2);
 barracks_height = barracks_data(3);
 barracks_material_vol = barracks_data(4);
+
+%Caculate power requirements
 
 %Calculate volume of food per day per person
 vol_per_meal = .3*.15*.03; %m^3
@@ -124,12 +132,6 @@ else
     %Calculate the cost of materials and cost of sending it into space
     Total_cost = cal_total_cost(people, Habitat_material_volume, vol_per_meal, vol_food, lab_area);
 end
-
-%Calculate the water needed for the mission
-[person_water_vol, person_water_mass] = cal_water(people, duration);
-
-%Calculate the weight needed for the water recycling equipment
-recycle_equip_mass = cal_water_recycle_weight(people, duration);
     
 end
 

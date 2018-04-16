@@ -1,8 +1,8 @@
-function [ water_vol, mass_water ] = cal_water( num_people, duration, water_per_day)
+function [ meter_cubed_water, mass_water ] = cal_water( num_people, duration, water_per_day)
 %CAL_WATER calculates the amount of water that a mission needs
 % in order to sustain life.
 % num_people: the number of people on the mission
-% duration: the duration of mission in weeks
+% duration: the duration of mission in weeks only for time on mars
 % water_per_day: the amount of water that each astronaut uses daily in
 % gallons
 % water_vol: launch volume of water for the mission in the same units
