@@ -124,6 +124,12 @@ else
     %Calculate the cost of materials and cost of sending it into space
     Total_cost = cal_total_cost(people, Habitat_material_volume, vol_per_meal, vol_food, lab_area);
 end
+
+%Calculate the water needed for the mission
+[person_water_vol, person_water_mass] = cal_water(people, duration);
+
+%Calculate the weight needed for the water recycling equipment
+recycle_equip_mass = cal_water_recycle_weight(people, duration);
     
 end
 

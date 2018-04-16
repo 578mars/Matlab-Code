@@ -1,0 +1,186 @@
+Clear Globals();
+dt = New Table("checked points",
+	New Column("N_People", numeric),
+	New Column("Duration", numeric),
+	New Column("N_lab_equip", numeric),
+	
+	New Column("Barracks_Vol", numeric),
+	New Column("Farm_Radius", numeric),
+	New Column("Lab_Radius", numeric),
+	New Column("Storage_Radius", numeric),
+	
+	New Column("N_Farms", numeric),
+	New Column("N_Labs", numeric),
+	New Column("N_Storage", numeric),
+	
+	New Column("Total_Cost", numeric));
+app_path = Substr(Get Default Directory(), 2, 999);
+huts = Scene Display List();
+nPeople = 20;
+nWeeks = 20;
+nlabEquip = 20;
+
+// make the window layout
+scene = Scene Box(600, 600);
+personSlider = SliderBox(1, 100, nPeople, );
+personSlider << Set Width(300);
+personVal = H List Box(Text Box("Num People"), personSlider);
+
+durationSlider = SliderBox(7, 400, nWeeks, );
+durationSlider << Set Width(300);
+durationVal = H List Box(Text Box("Mission Time (weeks)"), durationSlider);
+
+labSlider = SliderBox(0, 50, nlabEquip, );
+labSlider << Set Width(300);
+labVal = H List Box(Text Box("Num Lab Equip"), labSlider);
+
+calc = Button Box("Calculate", getValues(nPeople, nWeeks, nlabEquip));
+
+
+New Window("Huts", Panel Box("huts", scene, personVal, durationVal, labVal, calc));
+
+drawHab = function({len, width, height, drawHabScene},
+	drawHabScene << Begin(Quad_strip);
+	drawHabScene << vertex(len/2, width/2, 0);
+	drawHabScene << vertex(len/2, width/2, Height);
+	drawHabScene << vertex(len/2, -width/2, 0);
+	drawHabScene << vertex(len/2, -width/2, Height);
+	
+	drawHabScene << vertex(-len/2, -width/2, 0);
+	drawHabScene << vertex(-len/2, -width/2, Height);
+	
+	drawHabScene << vertex(-len/2, width/2, 0);
+	drawHabScene << vertex(-len/2, width/2, Height);
+	
+	drawHabScene << vertex(len/2, width/2, 0);
+	drawHabScene << vertex(len/2, width/2, Height);
+	drawHabScene << end();
+	
+	drawHabScene << Begin(triangle_strip);
+	drawHabScene << vertex(len/2, width/2, Height);
+	drawHabScene << vertex(len/2, -width/2, Height);
+	drawHabScene << vertex(-len/2, width/2, Height);
+	drawHabScene << vertex(-len/2, -width/2, Height);
+	drawHabScene << end();
+);
+
+
+drawStation = Function( {habLen, habWidth, habHeight, labRad, farmRad, stoRad, tubeRad, tubeLen, numFarm, numLab, numStorage},
+	nSlices = 25;
+	baseRad = 550;
+	scene << clear;
+	huts << clear;
+	
+	huts << Shade Model(smooth);
+	huts << Light( Light0, POSITION, 0, -50, 50, 1);
+	huts << Enable(Lighting);
+	huts << Enable(Light0);
+	huts << Enable(COLOR_MATERIAL);
+	huts << Color( 0.8, 0.8, 0.8 );
+	
+	//draw the center barracks
+	huts << Push Matrix;
+	huts << Color(0.8, 0.8, 0.8);
+	drawHab(habLen, habWidth, habHeight, huts);
+	huts << Pop Matrix;
+	
+	//draw the labs in the positive x direction from the barracks
+	for(i = 0, i<numLab, i++, 
+		huts << Push Matrix;
+		huts << Color(0.8, 0.2, 0.2);
+		huts << Translate(hablen/2 + tubeLen + labRad + i * (2 * labRad + tubeLen), 0, 0);
+		huts << Sphere(labRad, nSlices, nSlices);
+		huts << Pop Matrix;
+		// draw the lab tunnel
+		huts << Push Matrix;
+		huts << Color(0.3, 0.3, 0.3);
+		huts << rotate(90, 0, 1, 0);
+		huts << Translate(0, 0, hablen/2 + i * (2 * labRad + tubeLen));
+		huts << cylinder(tubeRad, tubeRad, tubeLen, 15, 5);
+		huts << Pop Matrix;
+	);
+	
+	
+	// draw the farms in the negative x direction from the barracks
+	for(i=0, i<numFarm, i++,
+		huts << Push Matrix;
+		huts << Color(0.2, 0.8, 0.2);
+		huts << Translate(-(hablen/2 + tubeLen + farmRad) - i * (2 * farmRad + tubeLen), 0, 0);
+		huts << Sphere(farmRad, nSlices, nSlices);
+		huts << Pop Matrix;
+		// draw the farm tunnel
+		huts << Push Matrix;
+		huts << Color(0.3, 0.3, 0.3);
+		huts << rotate(-90, 0, 1, 0);
+		huts << Translate(0, 0, hablen/2 + i * (2 * farmRad + tubeLen));
+		huts << cylinder(tubeRad, tubeRad, tubeLen, 15, 5);
+		huts << Pop Matrix;
+	);
+	
+	// draw the storages in the positive y direction from the barracks
+	for(i=0, i<numStorage, i++,
+		huts << Push Matrix;
+		huts << Color(0.2, 0.2, 0.8);
+		huts << Translate(0, habWidth/2 + tubeLen + stoRad + i * (2 * stoRad + tubeLen), 0);
+		huts << Sphere(stoRad, nSlices, nSlices);
+		huts << Pop Matrix;
+		// draw the storage tunnel
+		huts << Push Matrix;
+		huts << Color(0.3, 0.3, 0.3);
+		huts << rotate(-90, 1, 0, 0);
+		huts << Translate(0, 0, habWidth/2 + i * (2 * stoRad + tubeLen));
+		huts << cylinder(tubeRad, tubeRad, tubeLen, 15, 5);
+		huts << Pop Matrix;
+	);
+	
+	// draw the ground
+	huts << Push Matrix;
+	huts << Color( 0.8, 0.5, 0.2 );
+	huts << Polygon Mode( FRONT_AND_BACK, FILL );
+	huts << Material( Front_and_back, Specular, 0, 0, 0, 1 );
+	huts << Material( FRONT_AND_BACK, Shininess, 10 );
+	huts << Disk( 0, baseRad, 50, 50 );
+	huts << translate( 0, 0, -Max( labRad, farmRad, stoRad ) );
+	huts << Disk( 0, baseRad, 50, 50 );
+	huts << translate( 0, 0, Max( labRad, farmRad, stoRad ) );
+	huts << rotate( 180, 1, 0, 0 );
+	huts << Cylinder( baseRad, baseRad, Max( labRad, farmRad, stoRad ), 50, 50 );
+	huts << Pop Matrix;
+
+
+	scene << Perspective( 55, 1, 4000 );
+	scene << LookAt( 80, -180, 188.5, 0, 0, 0, 0, 0, 1 );
+	scene << ArcBall( huts, 60);
+	scene << Update;
+);
+
+getValues = Function({num_people, duration, lab_equip},
+	num_people = floor(num_people);
+	duration = floor(duration);
+	lab_equip = floor(lab_equip);
+	if(matlab is connected(), , matlab connect());
+	Matlab Execute({}, {}, "cd " || app_path);
+	MATLAB Execute({}, {test}, "test = cal_water(10,10)");
+	matlab execute({}, {Habitat_material_volume, 
+						Total_cost, 
+						opt_num_farm_domes,
+						opt_num_lab_domes, 
+						opt_num_storage_domes,
+						farm_rad, lab_rad, 
+						storage_rad, 
+						tube_length, 
+						tube_rad, 
+						barracks_length, 
+						barracks_width, 
+						barracks_height},
+						"[Habitat_material_volume, Total_cost, opt_num_farm_domes, opt_num_lab_domes, opt_num_storage_domes, farm_rad, lab_rad, storage_rad, tube_length, tube_rad, barracks_length, barracks_width, barracks_height] = cal_main(" || char(num_people) ||", "||char(duration)||", "|| char(lab_equip)||")");
+	drawStation(barracks_length, barracks_width, barracks_height, lab_rad, farm_rad, storage_rad, tube_rad, tube_length, opt_num_farm_domes, opt_num_lab_domes, opt_num_storage_domes);
+	dt << add rows({:N_people=num_people, :Duration=duration, :N_lab_equip=lab_equip, :Barracks_Vol = barracks_length*barracks_width*barracks_height,
+					:Farm_Radius=farm_rad, :Lab_Radius=lab_rad, :Storage_Radius=storage_rad, :N_Farms=opt_num_farm_domes, :N_Labs=opt_num_lab_domes,
+					:N_Storage=opt_num_storage_domes, :Total_Cost=Total_cost});
+);
+
+
+//{habLen, habWidth, habHeight, labRad, farmRad, stoRad, tubeRad, tubeLen, numFarm, numLab, numStorage}
+//drawStation(1.2, 1.5, 0.35, 0.3, 0.4, 0.5, 0.1, 0.2, 5, 3, 10)
+getValues(nPeople, nWeeks, nlabEquip);
