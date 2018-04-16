@@ -24,6 +24,24 @@ stoVal = H List Box(Text Box("Sorage Size"), stoSlider);
 
 New Window( "Huts", Panel Box( "huts", scene, habVal, labVal, farmVal, stoVal ) );
 
+drawHab = function( {Len, Width, Height, drawHabScene},
+	// draw each of the quads individually
+	drawHabScene << Begin(Quads);
+	drawHabScene << Normal(1, 0, 0);
+	drawHabScene << vertex(len/2, width/2, 0);
+	drawHabScene << vertex(len/2, -width/2, 0);
+	drawHabScene << vertex(len/2, width/2, Height);
+	drawHabScene << vertex(len/2, -width/2, Height);
+	
+	drawHabScene << Normal(0, 1, 0);
+	drawHabScene << vertex(len/2, width/2, 0);
+	drawHabScene << vertex(-len/2, width/2, 0);
+	drawHabScene << vertex(len/2, width/2, Height);
+	drawHabScene << vertex(-len/2, width/2, Height);
+	
+	drawHabScene << End();
+);
+
 
 drawStation = Function( {habRad, labRad, farmRad, stoRad},
 	gapOffset = 1.1;
@@ -46,7 +64,8 @@ drawStation = Function( {habRad, labRad, farmRad, stoRad},
 	// draw the center habitation
 	huts << Push Matrix;
 	huts << Color( 0.8, 0.8, 0.8 );
-	huts << Sphere( habRad, nSlices, nSlices );
+	drawHab(habRad, habRad, 1.5, huts);
+	//huts << Sphere( habRad, nSlices, nSlices );
 	huts << Pop Matrix;
 
 	// draw the lab
