@@ -24,5 +24,5 @@ consumable_interval_weight = (consumable_replacement_interval / weeks_per_year) 
 num_consumable_intervals = ceil(duration / consumable_replacement_interval);
 consumable_weight = num_consumable_intervals * consumable_interval_weight; %kg
 equip_weight = hardwear_weight + consumable_weight; % kg
-equip_power = num_units_required * (avg_urine_power + avg_water_power);
+equip_power = num_units_required * (avg_urine_power + avg_water_power) * 24 * 60 * 60;
 end
