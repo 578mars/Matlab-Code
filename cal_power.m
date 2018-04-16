@@ -1,12 +1,12 @@
-function [ power_req, panels_req_farm, total_panel_req, farm_panel_weight, total_panel_weight ] = cal_power( num_people, farm_size, habitation_len, habitation_width, lab_size, storage_size, water_power )
+function [ power_req, panels_req_farm, total_panel_req, farm_panel_weight, total_panel_weight ] = cal_power( num_people, farm_size, habitation_len, habitation_width, lab_area, storage_rad, water_power )
 %CAL_POWER - Caluculates the power and solar panels required for the base on mars.
 %INPUTS:
 %num_people - the number of people in the mission
 %farm_size - the size of the farm in sq meters
 %habitation_len - length of the habitation in meters
 % habitation_width - width of the habitation in meters
-%lab_size - the size of the lab in meters^3
-%storage_size - the size of the storage area in meters^3
+%lab_area - the size of the lab in meters^2
+%storage_rad - radius of the storage area
 %water_power - the total amount of power required by the water reclamation system
 
 %OUTPUTS:
@@ -50,8 +50,8 @@ watt_per_lumen = 0.007532; % per light output jmp file
 lit_ratio = 0.5;
 
 hab_sq_meter = habitation_len * habitation_width;
-lab_sq_meter = pi * (3 * lab_size / (2 * pi))^(2/3);
-storage_sq_meter = pi * (3 * storage_size / (2 * pi))^(2/3);
+lab_sq_meter = lab_area;
+storage_sq_meter = pi * storage_rad^2;
 lit_sq_meter = hab_sq_meter + lab_sq_meter + storage_sq_meter;
 lumen_required = lit_sq_meter * lumen_required_per_sqmeter;
 lit_watt_requrired = lumen_required * watt_per_lumen;
