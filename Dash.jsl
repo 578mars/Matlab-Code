@@ -226,17 +226,17 @@ runDOE = Function({},
 getValues(nPeople, nWeeks, nlabEquip, 1);
 
 makeTheWindow = Function({},
-	plotBox = v list box(Chart( X(:N_People), Y(:name("Cost(millions)")), point chart(1), 
-				SendToReport( Dispatch( {}, "Chart Graph", FrameBox, {Frame Size( 277, 96 )} ) ),
+	plotBox = v list box(Bivariate( X(:N_People), Y(:name("Cost(millions)")), Automatic Recalc(1), 
+				SendToReport( Dispatch( {}, "Bivar Plot", FrameBox, {Frame Size( 320, 120 )} ) ),
 				SendToReport( Dispatch( {}, "Chart", OutlineBox, {Set Title("Cost Vs. People")}))
 			);, 
-		Chart( X(:Duration), Y(:name("Cost(millions)")), point chart(1), 
-			SendToReport( Dispatch( {}, "Chart Graph", FrameBox, {Frame Size( 277, 96 )} ) ,
+		Bivariate( X(:Duration), Y(:name("Cost(millions)")), Automatic Recalc(1), 
+			SendToReport( Dispatch( {}, "Bivar Plot", FrameBox, {Frame Size( 320, 120 )} ) ,
 				Dispatch({}, "Chart", OutlineBox, {Set Title("Cost Vs. Duration")})
 			)
 		);, 
-		Chart( X(:N_lab_equip), Y(:name("Cost(millions)")), point chart(1), 
-		SendToReport( Dispatch( {}, "Chart Graph", FrameBox, {Frame Size( 277, 96 )} ), 
+		Bivariate( X(:N_lab_equip), Y(:name("Cost(millions)")), Automatic Recalc(1), 
+		SendToReport( Dispatch( {}, "Bivar Plot", FrameBox, {Frame Size( 320, 120 )} ), 
 			Dispatch({}, "Chart", OutlineBox, {Set Title("Cost Vs. N Lab Equipment")})
 		)
 		);
