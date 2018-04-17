@@ -17,7 +17,7 @@ daily_water_loss = 0.3 .* daily_water_use;
 num_days = ceil(duration .* 7.0);
 total_water_loss = daily_water_loss .* num_days;
 water_vol = total_water_loss + daily_water_use; % gal
-meter_cubed_water = water_vol / meter_cubed_per_gallon; %m^3
+meter_cubed_water = water_vol * meter_cubed_per_gallon; %m^3 %CHANGED IT TO * instead of /
 mass_water = meter_cubed_water * water_dens; %kg
 end
 

@@ -4,8 +4,8 @@
 %ALL UNITS ARE IN METERS
 % clear all;
 % clc;
-function [Habitat_material_volume, Total_cost, opt_num_farm_domes, opt_num_lab_domes, opt_num_storage_domes,...
-    farm_rad, lab_rad, storage_rad, tube_length, tube_rad, barracks_length, barracks_width, barracks_height, num_panels_total] = cal_main(people, duration, lab_equip)
+ function [Habitat_material_volume, Total_cost, opt_num_farm_domes, opt_num_lab_domes, opt_num_storage_domes,...
+     farm_rad, lab_rad, storage_rad, tube_length, tube_rad, barracks_length, barracks_width, barracks_height, num_panels_total] = cal_main(people, duration, lab_equip)
 
 %Get number of people and mission duration. This will come from JMP GUI
 %input. Mission duration will be in weeks and will be the time on Mars not including the travel time
@@ -51,7 +51,7 @@ vol_food4trip = vol_per_day_pp*people*270; %Trip is approximately 9 months (270 
 %then a farm is definitely unnecessary (m^2)
 if duration > 13
     farm_area = people*61;
-    vol_farm_water =0;% .5*farm_area; %500mm/total growing period over the area
+    vol_farm_water = 0;%.5*farm_area; %500mm/total growing period over the area
 else
     farm_area = 0;
     vol_food_mars = vol_per_day_pp*people*duration*7;

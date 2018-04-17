@@ -31,11 +31,11 @@ grow_light_coverage = -0.1162 + 0.005535 * grow_light_power;
 % per https://nssdc.gsfc.nasa.gov/planetary/factsheet/marsfact.html
 % mars recieves and average of 586 w/m^2 for ~16hr/day
 % panel size is approx 1.75m^2 and around 18 kg
-panel_efficiency = .5; %0.2;
+panel_efficiency = 0.2;
 panel_percent_gen = 0.7; %the percentage of sunlight time that the panels actually produce power
 mars_daylight_hours = 16;
 panel_size = 1.75; % m^2
-panel_weight = 6; %18; % kg
+panel_weight = 18; % kg
 panel_power_per_day = 586 * min_per_hour * sec_per_min * mars_daylight_hours * panel_efficiency * panel_percent_gen; % joules
 
 n_grow_lights_reqd = ceil(farm_size / grow_light_coverage);
