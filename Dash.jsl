@@ -1,4 +1,6 @@
 Clear Globals();
+jmpColors = {"Red", "Green", "Blue", "Orange", "BlueGreen", "Purple", "Yellow", "Cyan", "Magenta", "YellowGreen", "BlueCyan", "Fuchsia"};
+color_idx = 1;
 dt = New Table("checked points",
 	New Column("N_People", numeric),
 	New Column("Duration", numeric),
@@ -58,7 +60,7 @@ run_doe_button = Button Box("Run DOE", runDOE);
 doe_box = H List Box(textBox("Num DOE Runs"), doe_size_spin, run_doe_button);
 
 // button to calculate design
-calc = Button Box("Calculate", getValues(nPeople, nWeeks, nlabEquip));
+calc = Button Box("Calculate", getValues(nPeople, nWeeks, nlabEquip, 1));
 
 
 
@@ -219,6 +221,14 @@ runDOE = Function({},
 		getValues(doe_people, doe_weeks, doe_nLabEquip, 1);
 		print(ii);
 	);
+	nTableRows = nRows(dt);
+	seleStart = nTableRows - nDOE + 1;
+	dt << clear select;
+	dt << select rows(index(seleStart, nTableRows));
+	//dt << colors({Random Uniform(0, 255), Random Uniform(0, 255), Random Uniform(0, 255)});
+	dt << colors(jmpColors[color_idx]);
+	color_idx = color_idx + 1;
+	dt << clear select;
 );
 
 //{habLen, habWidth, habHeight, labRad, farmRad, stoRad, tubeRad, tubeLen, numFarm, numLab, numStorage}
