@@ -179,7 +179,7 @@ drawStation = Function( {habLen, habWidth, habHeight, labRad, farmRad, stoRad, t
 	scene << Update;
 );
 
-getValues = Function({num_people, duration, lab_equip, draw_station},
+getValues = Function({num_people, duration, lab_equip, draw_station, colorize=0},
 	num_people = floor(num_people);
 	duration = floor(duration);
 	lab_equip = floor(lab_equip);
@@ -205,6 +205,12 @@ getValues = Function({num_people, duration, lab_equip, draw_station},
 	dt << add rows({:N_people=num_people, :Duration=duration, :N_lab_equip=lab_equip, :Barracks_Vol = barracks_length*barracks_width*barracks_height,
 					:Farm_Radius=farm_rad, :Lab_Radius=lab_rad, :Storage_Radius=storage_rad, :N_Farms=opt_num_farm_domes, :N_Labs=opt_num_lab_domes,
 					:N_Storage=opt_num_storage_domes, :name("Cost(millions)")=Total_cost/1000000});
+	dt << clear select;
+	dt << select rows(nRows(dt));
+	if(colorize,
+		dt << colors(jmpColors[color_idx])
+	);
+	dt << clear select;
 	
 	//costPeoplePlot = Chart( X(:N_People), Y(:name("Cost(millions)")));
 );
@@ -218,17 +224,10 @@ runDOE = Function({},
 		if(personCheck << Get, doe_people = Random Uniform(nPeopleMin, nPeopleMax+0.01));
 		if(durationCheck << Get, doe_weeks = Random Uniform(nWeeksMin, nWeeksMax+0.01));
 		if(labCheck << Get, doe_nLabEquip = Random Uniform(nLabEquipMin, nLabEquipMax+0.01));
-		getValues(doe_people, doe_weeks, doe_nLabEquip, 1);
+		getValues(doe_people, doe_weeks, doe_nLabEquip, 1, 1);
 		print(ii);
 	);
-	nTableRows = nRows(dt);
-	seleStart = nTableRows - nDOE + 1;
-	dt << clear select;
-	dt << select rows(index(seleStart, nTableRows));
-	//dt << colors({Random Uniform(0, 255), Random Uniform(0, 255), Random Uniform(0, 255)});
-	dt << colors(jmpColors[color_idx]);
 	color_idx = color_idx + 1;
-	dt << clear select;
 );
 
 //{habLen, habWidth, habHeight, labRad, farmRad, stoRad, tubeRad, tubeLen, numFarm, numLab, numStorage}
