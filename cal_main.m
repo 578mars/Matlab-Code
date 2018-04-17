@@ -22,7 +22,7 @@ vol_pp = 3.45/(1+exp(-.035338272*(duration-46.375824723))); %Based on JMP model
 [person_water_vol, person_water_mass] = cal_water(people, duration);
 
 %Calculate the weight needed for the water recycling equipment
-recycle_equip_mass, recycle_equip_power = cal_water_recycle_weight(people, duration);
+[recycle_equip_mass, recycle_equip_power] = cal_water_recycle_weight(people, duration);
 
 %Calculate the Required LAB AREA (m^2)
 lab_area = cal_lab_size(people, lab_equip);
