@@ -13,7 +13,8 @@ dt = New Table("checked points",
 	New Column("N_Labs", numeric),
 	New Column("N_Storage", numeric),
 	
-	New Column("Cost", numeric));
+	New Column("Cost(millions)", numeric));
+	:name("Cost(millions)") << Format("Currency");
 app_path = Substr(Get Default Directory(), 2, 999);
 huts = Scene Display List();
 nPeople = 20;
@@ -25,9 +26,10 @@ nWeeksMax = 104;
 nlabEquip = 20;
 nLabEquipMin = 0;
 nLabEquipMax = 100;
+getValues(nPeople, nWeeks, nlabEquip, 0);
 
 // make the window layout
-scene = Scene Box(900, 600);
+scene = Scene Box(900, 200);
 personNumBox = Number Edit Box(nPeople,4);
 personSlider = SliderBox(nPeopleMin, nPeopleMax, nPeople, Function({}, personNumBox << set(floor(nPeople))));
 personNumBox << Set Function(Function({}, personSlider << set(personNumBox << Get)));
@@ -55,9 +57,13 @@ nb << Set Increment(1);
 run_doe_button = Button Box("Run DOE", runDOE);
 doe_box = H List Box(textBox("Num DOE Runs"), doe_size_spin, run_doe_button);
 
+// button to calculate design
 calc = Button Box("Calculate", getValues(nPeople, nWeeks, nlabEquip));
 
-New Window("Huts", Panel Box("huts", scene, personVal, durationVal, labVal, doe_box, calc));
+//costPeoplePlot = Chart( X(:N_People), Y(:name("Cost(millions)")));
+costPeoplePlot = Chart();
+
+New Window("Huts", Panel Box("huts", scene, personVal, durationVal, labVal, doe_box, calc, costPeoplePlot));
 
 drawHab = function({len, width, height, drawHabScene},
 	drawHabScene << Begin(Quad_strip);
@@ -173,7 +179,7 @@ drawStation = Function( {habLen, habWidth, habHeight, labRad, farmRad, stoRad, t
 	scene << Update;
 );
 
-getValues = Function({num_people, duration, lab_equip},
+getValues = Function({num_people, duration, lab_equip, draw_station},
 	num_people = floor(num_people);
 	duration = floor(duration);
 	lab_equip = floor(lab_equip);
@@ -193,10 +199,12 @@ getValues = Function({num_people, duration, lab_equip},
 						barracks_width, 
 						barracks_height},
 						"[Habitat_material_volume, Total_cost, opt_num_farm_domes, opt_num_lab_domes, opt_num_storage_domes, farm_rad, lab_rad, storage_rad, tube_length, tube_rad, barracks_length, barracks_width, barracks_height] = cal_main(" || char(num_people) ||", "||char(duration)||", "|| char(lab_equip)||")");
-	drawStation(barracks_length, barracks_width, barracks_height, lab_rad, farm_rad, storage_rad, tube_rad, tube_length, opt_num_farm_domes, opt_num_lab_domes, opt_num_storage_domes);
+	if(draw_station,
+		drawStation(barracks_length, barracks_width, barracks_height, lab_rad, farm_rad, storage_rad, tube_rad, tube_length, opt_num_farm_domes, opt_num_lab_domes, opt_num_storage_domes);
+	);
 	dt << add rows({:N_people=num_people, :Duration=duration, :N_lab_equip=lab_equip, :Barracks_Vol = barracks_length*barracks_width*barracks_height,
 					:Farm_Radius=farm_rad, :Lab_Radius=lab_rad, :Storage_Radius=storage_rad, :N_Farms=opt_num_farm_domes, :N_Labs=opt_num_lab_domes,
-					:N_Storage=opt_num_storage_domes, :Cost=Total_cost});
+					:N_Storage=opt_num_storage_domes, :name("Cost(millions)")=Total_cost/1000000});
 );
 
 runDOE = Function({},
@@ -208,11 +216,11 @@ runDOE = Function({},
 		if(personCheck << Get, doe_people = Random Uniform(nPeopleMin, nPeopleMax+0.01));
 		if(durationCheck << Get, doe_weeks = Random Uniform(nWeeksMin, nWeeksMax+0.01));
 		if(labCheck << Get, doe_nLabEquip = Random Uniform(nLabEquipMin, nLabEquipMax+0.01));
-		getValues(doe_people, doe_weeks, doe_nLabEquip);
+		getValues(doe_people, doe_weeks, doe_nLabEquip, 1);
 		print(ii);
 	);
 );
 
 //{habLen, habWidth, habHeight, labRad, farmRad, stoRad, tubeRad, tubeLen, numFarm, numLab, numStorage}
 //drawStation(1.2, 1.5, 0.35, 0.3, 0.4, 0.5, 0.1, 0.2, 5, 3, 10)
-getValues(nPeople, nWeeks, nlabEquip);
+getValues(nPeople, nWeeks, nlabEquip, 1);
