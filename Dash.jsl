@@ -29,7 +29,7 @@ nLabEquipMax = 100;
 getValues(nPeople, nWeeks, nlabEquip, 0);
 
 // make the window layout
-scene = Scene Box(900, 200);
+scene = Scene Box(900, 700);
 personNumBox = Number Edit Box(nPeople,4);
 personSlider = SliderBox(nPeopleMin, nPeopleMax, nPeople, Function({}, personNumBox << set(floor(nPeople))));
 personNumBox << Set Function(Function({}, personSlider << set(personNumBox << Get)));
@@ -60,10 +60,8 @@ doe_box = H List Box(textBox("Num DOE Runs"), doe_size_spin, run_doe_button);
 // button to calculate design
 calc = Button Box("Calculate", getValues(nPeople, nWeeks, nlabEquip));
 
-//costPeoplePlot = Chart( X(:N_People), Y(:name("Cost(millions)")));
-costPeoplePlot = Chart();
 
-New Window("Huts", Panel Box("huts", scene, personVal, durationVal, labVal, doe_box, calc, costPeoplePlot));
+
 
 drawHab = function({len, width, height, drawHabScene},
 	drawHabScene << Begin(Quad_strip);
@@ -205,6 +203,8 @@ getValues = Function({num_people, duration, lab_equip, draw_station},
 	dt << add rows({:N_people=num_people, :Duration=duration, :N_lab_equip=lab_equip, :Barracks_Vol = barracks_length*barracks_width*barracks_height,
 					:Farm_Radius=farm_rad, :Lab_Radius=lab_rad, :Storage_Radius=storage_rad, :N_Farms=opt_num_farm_domes, :N_Labs=opt_num_lab_domes,
 					:N_Storage=opt_num_storage_domes, :name("Cost(millions)")=Total_cost/1000000});
+	
+	//costPeoplePlot = Chart( X(:N_People), Y(:name("Cost(millions)")));
 );
 
 runDOE = Function({},
@@ -224,3 +224,26 @@ runDOE = Function({},
 //{habLen, habWidth, habHeight, labRad, farmRad, stoRad, tubeRad, tubeLen, numFarm, numLab, numStorage}
 //drawStation(1.2, 1.5, 0.35, 0.3, 0.4, 0.5, 0.1, 0.2, 5, 3, 10)
 getValues(nPeople, nWeeks, nlabEquip, 1);
+
+makeTheWindow = Function({},
+	plotBox = v list box(Chart( X(:N_People), Y(:name("Cost(millions)")), point chart(1), 
+				SendToReport( Dispatch( {}, "Chart Graph", FrameBox, {Frame Size( 277, 96 )} ) ),
+				SendToReport( Dispatch( {}, "Chart", OutlineBox, {Set Title("Cost Vs. People")}))
+			);, 
+		Chart( X(:Duration), Y(:name("Cost(millions)")), point chart(1), 
+			SendToReport( Dispatch( {}, "Chart Graph", FrameBox, {Frame Size( 277, 96 )} ) ,
+				Dispatch({}, "Chart", OutlineBox, {Set Title("Cost Vs. Duration")})
+			)
+		);, 
+		Chart( X(:N_lab_equip), Y(:name("Cost(millions)")), point chart(1), 
+		SendToReport( Dispatch( {}, "Chart Graph", FrameBox, {Frame Size( 277, 96 )} ), 
+			Dispatch({}, "Chart", OutlineBox, {Set Title("Cost Vs. N Lab Equipment")})
+		)
+		);
+	);
+	dispBox = H List Box(scene, plotBox);
+	//New Window("Huts", Panel Box("huts", scene, personVal, durationVal, labVal, doe_box, calc));
+	New Window("Huts", Panel Box("huts", dispBox, personVal, durationVal, labVal, doe_box, calc));
+);
+wait(0);
+makeTheWindow();
