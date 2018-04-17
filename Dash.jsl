@@ -24,20 +24,28 @@ nlabEquip = 20;
 scene = Scene Box(1000, 800);
 personSlider = SliderBox(1, 100, nPeople, );
 personSlider << Set Width(300);
-personVal = H List Box(Text Box("Num People"), personSlider);
+personCheck = Check Box({"Num People"},);
+personVal = H List Box(personCheck, personSlider);
 
 durationSlider = SliderBox(7, 400, nWeeks, );
 durationSlider << Set Width(300);
-durationVal = H List Box(Text Box("Mission Time (weeks)"), durationSlider);
+durationCheck = Check Box({"Duration (weeks)"}, );
+durationVal = H List Box(durationCheck, durationSlider);
 
 labSlider = SliderBox(0, 50, nlabEquip, );
 labSlider << Set Width(300);
-labVal = H List Box(Text Box("Num Lab Equip"), labSlider);
+labCheck = Check Box({"Num Lab Equip"}, );
+labVal = H List Box(labCheck, labSlider);
+
+doe_size_spin = Lineup Box(2, nb=Number Edit Box(3), sb=Spin Box(Function({value}, nb << Increment( value ))));
+nb << Set Increment(1);
+run_doe = Button Box("Run DOE", );
+doe_box = H List Box(doe_size_spin, run_doe);
 
 calc = Button Box("Calculate", getValues(nPeople, nWeeks, nlabEquip));
 
 
-New Window("Huts", Panel Box("huts", scene, personVal, durationVal, labVal, calc));
+New Window("Huts", Panel Box("huts", scene, personVal, durationVal, labVal, doe_box, calc));
 
 drawHab = function({len, width, height, drawHabScene},
 	drawHabScene << Begin(Quad_strip);
