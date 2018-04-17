@@ -1,7 +1,7 @@
 %Function to calculate the total required material needed for the entire
 %habitat structure
 
-function [opt_num_farm_domes, opt_num_lab_domes, opt_num_storage_domes, farm_rad, lab_rad, storage_rad, L_final, ri, v_min_final] = cal_habitat_size(A_farm, A_lab, wall_thickness, vol_food)
+function [opt_num_farm_domes, opt_num_lab_domes, opt_num_storage_domes, farm_rad, lab_rad, storage_rad, L_final, ri, v_min_final] = cal_habitat_size(A_farm, A_lab, wall_thickness, vol_food, recycle_equip_vol, vol_farm_water, vol_personal_water)
 %     A_farm = 0;
 %     A_lab = 20;
 %     wall_thickness = .05;
@@ -10,7 +10,11 @@ count = 1;
 %Calculate the required radius of a dome for storing the food to get the
 %required area. This should allow us to see if more than one dome is
 %necessary
-storage_radius = (3*vol_food/(4*pi))^(1/3);
+
+%Calculate the volume of storage space required for water and water
+%reclamation units
+vol_storage = vol_food + vol_farm_water + vol_personal_water + recycle_equip_vol;
+storage_radius = (3*vol_storage/(4*pi))^(1/3);
 A_storage = pi*storage_radius^2;
 
 %Test different maximum radii to find the one that produces the lowest

@@ -4,11 +4,15 @@
 
 %Look for cost estimating relationships
 
-function [total_cost] = cal_total_cost(num_people, material_volume,vol_food_pm, vol_food, equipment_area)
+function [total_cost] = cal_total_cost(num_people, material_volume,vol_food_pm, vol_food, equipment_area, total_panel_weight, total_water_vol, recycle_equip_mass)
 
 %Define cost of HABITAT MATERIALS
 habitat_material_density = 4.43; %kg/m^3 (Ti-6Al-4V)
 habitat_material_cost = 50; %$/kg (approximate)
+
+%Define cost of WATER
+water_dens = 999.97; %kg/m^3
+water_mass = total_water_vol*water_dens;
 
 %Define cost of FOOD
 num_meals = vol_food/vol_food_pm;
@@ -32,7 +36,7 @@ total_food_cost = food_mass * food_cost_per_kg;
 total_equipment_cost = equipment_area * equipment_cost;
 
 %Calculate the total mass of stuff being sent to get "rocket cost"
-total_mass = (material_volume*habitat_material_density) + food_mass + equipment_mass + (num_people*human_mass);
+total_mass = (material_volume*habitat_material_density) + food_mass + equipment_mass + (num_people*human_mass) + total_panel_weight + water_mass + recycle_equip_mass;
 
 total_rocket_cost = total_mass*space_cost; 
 
