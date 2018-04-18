@@ -28,7 +28,7 @@ nWeeksMax = 104;
 nlabEquip = 20;
 nLabEquipMin = 0;
 nLabEquipMax = 100;
-getValues(nPeople, nWeeks, nlabEquip, 0);
+//getValues(nPeople, nWeeks, nlabEquip, 0);
 
 // make the window layout
 scene = Scene Box(900, 700);
@@ -179,13 +179,15 @@ drawStation = Function( {habLen, habWidth, habHeight, labRad, farmRad, stoRad, t
 	scene << Update;
 );
 
-getValues = Function({num_people, duration, lab_equip, draw_station, colorize=0},
+getValues = Function({num_people, duration, lab_equip, draw_station_flag, colorize=0},
 	num_people = floor(num_people);
 	duration = floor(duration);
 	lab_equip = floor(lab_equip);
 	if(matlab is connected(), , matlab connect());
 	Matlab Execute({}, {}, "cd " || app_path);
 	MATLAB Execute({}, {test}, "test = cal_water(10,10)");
+	cal_string = "[Habitat_material_volume, Total_cost, opt_num_farm_domes, opt_num_lab_domes, opt_num_storage_domes, farm_rad, lab_rad, storage_rad, tube_length, tube_rad, barracks_length, barracks_width, barracks_height, num_panels] = cal_main(" || char(num_people) ||", "||char(duration)||", "|| char(lab_equip)||")";
+	print(cal_string);
 	matlab execute({}, {Habitat_material_volume, 
 						Total_cost, 
 						opt_num_farm_domes,
@@ -197,9 +199,11 @@ getValues = Function({num_people, duration, lab_equip, draw_station, colorize=0}
 						tube_rad, 
 						barracks_length, 
 						barracks_width, 
-						barracks_height},
-						"[Habitat_material_volume, Total_cost, opt_num_farm_domes, opt_num_lab_domes, opt_num_storage_domes, farm_rad, lab_rad, storage_rad, tube_length, tube_rad, barracks_length, barracks_width, barracks_height] = cal_main(" || char(num_people) ||", "||char(duration)||", "|| char(lab_equip)||")");
-	if(draw_station,
+						barracks_height,
+						num_panels
+						},
+						cal_string);
+	if(draw_station_flag,
 		drawStation(barracks_length, barracks_width, barracks_height, lab_rad, farm_rad, storage_rad, tube_rad, tube_length, opt_num_farm_domes, opt_num_lab_domes, opt_num_storage_domes);
 	);
 	dt << add rows({:N_people=num_people, :Duration=duration, :N_lab_equip=lab_equip, :Barracks_Vol = barracks_length*barracks_width*barracks_height,
@@ -232,7 +236,7 @@ runDOE = Function({},
 
 //{habLen, habWidth, habHeight, labRad, farmRad, stoRad, tubeRad, tubeLen, numFarm, numLab, numStorage}
 //drawStation(1.2, 1.5, 0.35, 0.3, 0.4, 0.5, 0.1, 0.2, 5, 3, 10)
-getValues(nPeople, nWeeks, nlabEquip, 1);
+getValues(nPeople, nWeeks, nlabEquip, 0);
 
 makeTheWindow = Function({},
 	plotBox = v list box(Bivariate( X(:N_People), Y(:name("Cost(millions)")), Automatic Recalc(1), 
