@@ -1,0 +1,9 @@
+string = "cal_main(20, 20, 20)";
+app_path = Substr(Get Default Directory(), 2, 999);
+
+
+matlab connect();
+matlab execute({}, {test}, "test = 100 * 100");
+matlab execute({}, {test2}, "test2 = sin(50)");
+Matlab Execute({}, {}, "cd " || app_path);
+matlab execute({}, {}, "cal_main(20, 20, 20)");
