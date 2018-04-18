@@ -15,6 +15,8 @@ dt = New Table("checked points",
 	New Column("N_Labs", numeric),
 	New Column("N_Storage", numeric),
 	
+	New Column("N_Solar_Panels", numeric),
+	
 	New Column("Cost(billions)", numeric));
 	:name("Cost(billions)") << Format("Currency");
 app_path = Substr(Get Default Directory(), 2, 999);
@@ -226,7 +228,7 @@ getValues = Function({num_people, duration, lab_equip, draw_station_flag, colori
 	);
 	dt << add rows({:N_people=num_people, :Duration=duration, :N_lab_equip=lab_equip, :Barracks_Vol = barracks_length*barracks_width*barracks_height,
 					:Farm_Radius=farm_rad, :Lab_Radius=lab_rad, :Storage_Radius=storage_rad, :N_Farms=opt_num_farm_domes, :N_Labs=opt_num_lab_domes,
-					:N_Storage=opt_num_storage_domes, :name("Cost(billions)")=Total_cost/1000000000});
+					:N_Storage=opt_num_storage_domes, :N_Solar_Panels=num_panels, :name("Cost(billions)")=Total_cost/1000000000});
 	dt << clear select;
 	dt << select rows(nRows(dt));
 	if(colorize,
