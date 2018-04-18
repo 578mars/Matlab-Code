@@ -15,15 +15,15 @@ clear all
 %     Radius_Farm, Radius_Lab, Radius_Storage, Tube_Length, Tube_Radius, Barracks_Length, Barracks_Width, Barracks_Height, Num_Solar_Panels] = cal_main(people(i),duration(i),lab_equip(i));
 % i
 % end
-% % x = 1:1:i;
+% % % x = 1:1:i;
 % Habitat_material_volume = Habitat_material_volume';
 % Total_cost = Total_cost';
 % Num_Farm_Domes = Num_Farm_Domes';
 % plot(x,Habitat_material);
 % 
-people = input('Number of People: ');
-duration = input('Mission Duration (weeks): ');
-lab_equip = input('Number of Lab Equipment: ');
+% people = input('Number of People: ');
+% duration = input('Mission Duration (weeks): ');
+% lab_equip = input('Number of Lab Equipment: ');
 
 
 [Habitat_material_volume, Total_cost, Num_Farm_Domes, Num_Lab_Domes, Num_Storage_Domes,... 

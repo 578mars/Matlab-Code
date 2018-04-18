@@ -2,13 +2,13 @@
 %habitat structure
 
 function [opt_num_farm_domes, opt_num_lab_domes, opt_num_storage_domes, farm_rad, lab_rad, storage_rad, L_final, ri, v_min_final] = cal_habitat_size(A_farm, A_lab, wall_thickness, vol_food, recycle_equip_vol, vol_farm_water, vol_personal_water)
-%      A_farm = 6100;
-%      A_lab = 20;
-%      wall_thickness = .05;
-%      vol_food = 72.9; 
-%      recycle_equip_vol = 18.31;
-%      vol_farm_water = 0;
-%      vol_personal_water = 358.86;
+     A_farm = 6100;
+     A_lab = 20;
+     wall_thickness = .05;
+     vol_food = 72.9; 
+     recycle_equip_vol
+     vol_farm_water
+     vol_personal_water
 count = 1;
 %Calculate the required radius of a dome for storing the food to get the
 %required area. This should allow us to see if more than one dome is
@@ -22,15 +22,15 @@ A_storage = pi*storage_radius^2;
 
 %Test different maximum radii to find the one that produces the lowest
 %total volume of material necessary
-for i=2.5:.01:15
+for i=2:.01:15
     
 %Set maximum radius of the dome in meters    
 max_radius(count) = i; %m
 max_area = pi*max_radius(count)^2; %m^2
-half_rad_area = pi*(max_radius(count)*2/3)^2; %m^2
+half_rad_area = pi*(max_radius(count)/3)^2; %m^2
 
 %Calculate the minumum number of domes for each section required
-num_living_domes = 0;
+num_living_domes = 1;
 num_storage_domes = ceil((A_storage/max_area));
 num_farm_domes = ceil((A_farm/(max_area+half_rad_area)));
 %num_farm_domes = ceil((A_farm/max_area));
@@ -89,25 +89,22 @@ plot(max_radius,total_material)
 %Determine the optimal radius
 k=find(total_material == min(total_material));
 opt_max_rad = max_radius(k);
-opt_max_half_rad = max_radius(k)*2/3;
 vol_material_flst = min(total_material);
 
 
 %Calculate the optimal max area for the domes. This is essentially the
 %largest a dome can be to minimize the material. 
 opt_area = pi*opt_max_rad^2; %m^2
-opt_half_area = pi*opt_max_half_rad^2;
 
 %Calculate the minumum number of domes for each section required based on
 %the optimal area from above.
-%opt_num_farm_domes = ceil((A_farm/opt_area));
-opt_num_farm_domes = ceil((A_farm/(opt_area+opt_half_area)));
+opt_num_farm_domes = ceil((A_farm/opt_area));
 opt_num_lab_domes = ceil((A_lab/opt_area));
 opt_num_storage_domes = ceil((A_storage/opt_area));
 
 %Find the total number of domes required (include standard central hub
 %dome)
-opt_num_domes = opt_num_farm_domes + opt_num_lab_domes + opt_num_storage_domes;
+opt_num_domes = opt_num_farm_domes + opt_num_lab_domes + opt_num_storage_domes + 1;
 
 %Find the optimal volume of material for the tubes
 L_final = opt_max_rad/4+4;
@@ -119,7 +116,7 @@ V_tubes_final = 1/2*(pi*L_final*(ro^2-ri^2))*opt_num_tubes;
 if opt_num_farm_domes == 0
     opt_a_farm = 0;
 else
-    opt_a_farm = A_farm/ceil(A_farm/opt_area);
+    opt_a_farm = A_farm/opt_num_farm_domes;
 end
 farm_rad = (opt_a_farm/pi)^.5;
 
@@ -132,7 +129,7 @@ storage_rad = (opt_a_storage/pi)^.5;
 %to stand in if they are to be useful. Therefore, the minimum radius of
 %each dome regardless of the type must be 2.5m. 
 if farm_rad < 2.5 && farm_rad ~= 0
-    farm_rad = 2.5;
+    farm_rad =2.5;
 end
 
 if lab_rad < 2.5
@@ -160,4 +157,4 @@ V_domes_final = V_farm_final*opt_num_farm_domes + V_lab_final*num_lab_domes + V_
 %Calculate the final minimum value of material volume necessary for the
 %Farm, Lab, Storage, and Tubes
 v_min_final = V_domes_final + V_tubes_final;
-%end
+end

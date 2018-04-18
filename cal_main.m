@@ -149,5 +149,5 @@ else
     Total_cost = cal_total_cost(people, Habitat_material_volume, vol_per_meal, vol_food, lab_area, total_panel_weight, total_water_vol, recycle_equip_mass);
 end
     
-%end
+end
 
