@@ -10,9 +10,10 @@ clear all
 % people = DOE(:,1);
 % duration = DOE(:,2);
 % lab_equip = DOE(:,3);
-% for i = 1:length(people)
+% for i = 1:length(people)/2
 %     [Habitat_material_volume(i), Total_cost(i), Num_Farm_Domes(i), Num_Lab_Domes, Num_Storage_Domes,... 
-%     Radius_Farm, Radius_Lab, Radius_Storage, Tube_Length, Tube_Radius, Barracks_Length, Barracks_Width, Barracks_Height] = cal_main(people(i),duration(i),lab_equip(i));
+%     Radius_Farm, Radius_Lab, Radius_Storage, Tube_Length, Tube_Radius, Barracks_Length, Barracks_Width, Barracks_Height, Num_Solar_Panels] = cal_main(people(i),duration(i),lab_equip(i));
+% i
 % end
 % % x = 1:1:i;
 % Habitat_material_volume = Habitat_material_volume';
@@ -23,7 +24,7 @@ clear all
 people = input('Number of People: ');
 duration = input('Mission Duration (weeks): ');
 lab_equip = input('Number of Lab Equipment: ');
-% 
-% 
-% [Habitat_material_volume, Total_cost, Num_Farm_Domes, Num_Lab_Domes, Num_Storage_Domes,... 
-%     Radius_Farm, Radius_Lab, Radius_Storage, Tube_Length, Tube_Radius, Barracks_Length, Barracks_Width, Barracks_Height] = cal_main(people,duration,lab_equip);
+
+
+[Habitat_material_volume, Total_cost, Num_Farm_Domes, Num_Lab_Domes, Num_Storage_Domes,... 
+    Radius_Farm, Radius_Lab, Radius_Storage, Tube_Length, Tube_Radius, Barracks_Length, Barracks_Width, Barracks_Height, Num_Solar_Panels] = cal_main(people,duration,lab_equip);

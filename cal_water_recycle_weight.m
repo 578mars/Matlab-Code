@@ -1,4 +1,4 @@
-function [ equip_weight, equip_power ] = cal_water_recycle_weight( num_people, duration )
+function [ equip_weight, equip_power, equip_vol ] = cal_water_recycle_weight( num_people, duration )
 % cal_water_recycle_weight - calculates the weight of the equipment that is required
 % for water recycling on the mission
 % num_people: number of people that are going on the mission
@@ -12,7 +12,7 @@ urine_processor_weight = 128; %kg per six people
 annual_wp_weight = 478; %kg per six people
 annual_up_weight = 175; %kg per six people
 avg_water_power = 300; %watts
-avg_urine_power = 91; %watta
+avg_urine_power = 91; %watts
 
 num_units_required = ceil(num_people / people_per_unit);
 hardwear_weight = num_units_required * (water_processor_weight + urine_processor_weight);
@@ -24,5 +24,6 @@ consumable_interval_weight = (consumable_replacement_interval / weeks_per_year) 
 num_consumable_intervals = ceil(duration / consumable_replacement_interval);
 consumable_weight = num_consumable_intervals * consumable_interval_weight; %kg
 equip_weight = hardwear_weight + consumable_weight; % kg
-equip_power = num_units_required * (avg_urine_power + avg_water_power);
+equip_power = num_units_required * (avg_urine_power + avg_water_power) * 24 * 60 * 60;
+equip_vol = num_units_required * (1.75*.81*.76);
 end
