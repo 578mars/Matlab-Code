@@ -60,7 +60,9 @@ run_doe_button = Button Box("Run DOE", runDOE);
 doe_box = H List Box(textBox("Num DOE Runs"), doe_size_spin, run_doe_button);
 
 // button to calculate design
-calc = Button Box("Calculate", getValues(nPeople, nWeeks, nlabEquip, 1));
+calc_button = Button Box("Calculate", getValues(nPeople, nWeeks, nlabEquip, 1));
+clear_button = Button Box("Clear History", clearAllData());
+bottom_buttons = H List Box(calc_button, clear_button);
 
 
 
@@ -272,8 +274,13 @@ makeTheWindow = Function({},
 	);
 	dispBox = H List Box(scene, plotBox);
 	//New Window("Huts", Panel Box("huts", scene, personVal, durationVal, labVal, doe_box, calc));
-	New Window("Huts", Panel Box("huts", dispBox, personVal, durationVal, labVal, doe_box, calc));
+	New Window("Huts", Panel Box("huts", dispBox, personVal, durationVal, labVal, doe_box, bottom_buttons));
 	getValues(nPeople, nWeeks, nlabEquip, 1);
 );
 wait(0);
 makeTheWindow();
+
+clearAllData = Function({},
+	dt << Select All Rows();
+	dt << delete rows();
+);
