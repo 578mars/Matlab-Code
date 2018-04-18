@@ -15,16 +15,16 @@ dt = New Table("checked points",
 	New Column("N_Labs", numeric),
 	New Column("N_Storage", numeric),
 	
-	New Column("Cost(millions)", numeric));
-	:name("Cost(millions)") << Format("Currency");
+	New Column("Cost(billions)", numeric));
+	:name("Cost(billions)") << Format("Currency");
 app_path = Substr(Get Default Directory(), 2, 999);
 huts = Scene Display List();
-nPeople = 20;
+nPeople = 120;
 nPeopleMin = 1;
-nPeopleMax = 100;
-nWeeks = 20;
+nPeopleMax = 120;
+nWeeks = 120;
 nWeeksMin = 5;
-nWeeksMax = 104;
+nWeeksMax = 300;
 nlabEquip = 20;
 nLabEquipMin = 0;
 nLabEquipMax = 100;
@@ -90,7 +90,7 @@ drawHab = function({len, width, height, drawHabScene},
 	drawHabScene << end();
 );
 
-drawStation = Function( {habLen, habWidth, habHeight, labRad, farmRad, stoRad, tubeRad, tubeLen, numFarm, numLab, numStorage},
+drawStation = Function( {habLen, habWidth, habHeight, labRad, farmRad, stoRad, tubeRad, tubeLen, numFarm, numLab, numStorage, nPanels=0},
 	nSlices = 25;
 	baseRad = 550;
 	scene << clear;
@@ -156,7 +156,23 @@ drawStation = Function( {habLen, habWidth, habHeight, labRad, farmRad, stoRad, t
 		huts << Translate(0, 0, habWidth/2 + i * (2 * stoRad + tubeLen));
 		huts << cylinder(tubeRad, tubeRad, tubeLen, 15, 5);
 		huts << Pop Matrix;
-	);
+		);
+		
+	// draw the solar panels in the negative x direction from the barracks
+	// right now the panels are just drawn as a square, but it could be better
+	panel_size = 1.75;
+	total_panel_area = nPanels * panel_size;
+	panel_side = sqrt(total_panel_area);
+	panel_y_offset = max(habWidth/2, farmRad, labRad)+2;
+	huts << Push Matrix;
+	huts << color(0.5, 0.5, 0.8);
+	huts << Begin(Quad_strip);
+	huts << vertex(panel_side/2, -panel_y_offset, 0.2);
+	huts << vertex(-panel_side/2, -panel_y_offset, 0.2);
+	huts << vertex(panel_side/2, -panel_y_offset - panel_side, 0.2);
+	huts << vertex(-panel_side/2, -panel_y_offset - panel_side, 0.2);
+	huts << end();
+	huts << Pop Matrix;
 	
 	// draw the ground
 	huts << Push Matrix;
@@ -204,11 +220,11 @@ getValues = Function({num_people, duration, lab_equip, draw_station_flag, colori
 						},
 						cal_string);
 	if(draw_station_flag,
-		drawStation(barracks_length, barracks_width, barracks_height, lab_rad, farm_rad, storage_rad, tube_rad, tube_length, opt_num_farm_domes, opt_num_lab_domes, opt_num_storage_domes);
+		drawStation(barracks_length, barracks_width, barracks_height, lab_rad, farm_rad, storage_rad, tube_rad, tube_length, opt_num_farm_domes, opt_num_lab_domes, opt_num_storage_domes, num_panels);
 	);
 	dt << add rows({:N_people=num_people, :Duration=duration, :N_lab_equip=lab_equip, :Barracks_Vol = barracks_length*barracks_width*barracks_height,
 					:Farm_Radius=farm_rad, :Lab_Radius=lab_rad, :Storage_Radius=storage_rad, :N_Farms=opt_num_farm_domes, :N_Labs=opt_num_lab_domes,
-					:N_Storage=opt_num_storage_domes, :name("Cost(millions)")=Total_cost/1000000});
+					:N_Storage=opt_num_storage_domes, :name("Cost(billions)")=Total_cost/1000000000});
 	dt << clear select;
 	dt << select rows(nRows(dt));
 	if(colorize,
@@ -239,16 +255,16 @@ runDOE = Function({},
 getValues(nPeople, nWeeks, nlabEquip, 0);
 
 makeTheWindow = Function({},
-	plotBox = v list box(Bivariate( X(:N_People), Y(:name("Cost(millions)")), Automatic Recalc(1), 
+	plotBox = v list box(Bivariate( X(:N_People), Y(:name("Cost(billions)")), Automatic Recalc(1), 
 				SendToReport( Dispatch( {}, "Bivar Plot", FrameBox, {Frame Size( 320, 120 )} ) ),
 				SendToReport( Dispatch( {}, "Chart", OutlineBox, {Set Title("Cost Vs. People")}))
 			);, 
-		Bivariate( X(:Duration), Y(:name("Cost(millions)")), Automatic Recalc(1), 
+		Bivariate( X(:Duration), Y(:name("Cost(billions)")), Automatic Recalc(1), 
 			SendToReport( Dispatch( {}, "Bivar Plot", FrameBox, {Frame Size( 320, 120 )} ) ,
 				Dispatch({}, "Chart", OutlineBox, {Set Title("Cost Vs. Duration")})
 			)
 		);, 
-		Bivariate( X(:N_lab_equip), Y(:name("Cost(millions)")), Automatic Recalc(1), 
+		Bivariate( X(:N_lab_equip), Y(:name("Cost(billions)")), Automatic Recalc(1), 
 		SendToReport( Dispatch( {}, "Bivar Plot", FrameBox, {Frame Size( 320, 120 )} ), 
 			Dispatch({}, "Chart", OutlineBox, {Set Title("Cost Vs. N Lab Equipment")})
 		)
@@ -257,6 +273,7 @@ makeTheWindow = Function({},
 	dispBox = H List Box(scene, plotBox);
 	//New Window("Huts", Panel Box("huts", scene, personVal, durationVal, labVal, doe_box, calc));
 	New Window("Huts", Panel Box("huts", dispBox, personVal, durationVal, labVal, doe_box, calc));
+	getValues(nPeople, nWeeks, nlabEquip, 1);
 );
 wait(0);
 makeTheWindow();
