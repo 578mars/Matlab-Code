@@ -19,14 +19,14 @@ dt = New Table("checked points",
 	:name("Cost(billions)") << Format("Currency");
 app_path = Substr(Get Default Directory(), 2, 999);
 huts = Scene Display List();
-nPeople = 120;
+nPeople = 20;
 nPeopleMin = 1;
 nPeopleMax = 120;
-nWeeks = 120;
+nWeeks = 20;
 nWeeksMin = 5;
 nWeeksMax = 300;
 nlabEquip = 20;
-nLabEquipMin = 0;
+nLabEquipMin = 1;
 nLabEquipMax = 100;
 //getValues(nPeople, nWeeks, nlabEquip, 0);
 
@@ -252,7 +252,7 @@ runDOE = Function({},
 
 //{habLen, habWidth, habHeight, labRad, farmRad, stoRad, tubeRad, tubeLen, numFarm, numLab, numStorage}
 //drawStation(1.2, 1.5, 0.35, 0.3, 0.4, 0.5, 0.1, 0.2, 5, 3, 10)
-getValues(nPeople, nWeeks, nlabEquip, 0);
+//getValues(nPeople, nWeeks, nlabEquip, 0);
 
 makeTheWindow = Function({},
 	plotBox = v list box(Bivariate( X(:N_People), Y(:name("Cost(billions)")), Automatic Recalc(1), 
