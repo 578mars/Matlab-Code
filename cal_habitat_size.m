@@ -80,8 +80,8 @@ count = count+1;
 end
 
 %Plot the total volume 
-figure(2)
-plot(max_radius,total_material)
+% figure(2)
+% plot(max_radius,total_material)
 
 %% Essentially what the following code does is pull the information for the
 %best case from the matrices created in the above for loop.
