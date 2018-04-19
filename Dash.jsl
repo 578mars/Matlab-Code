@@ -58,8 +58,9 @@ labVal = H List Box(labCheck, labSlider, labNumBox);
 // DOE button stuff
 doe_size_spin = Lineup Box(2, nb=Number Edit Box(3, 5), sb=Spin Box(Function({value}, nb << Increment( value ))));
 nb << Set Increment(1);
-run_doe_button = Button Box("Run DOE", runDOE);
+run_doe_button = Button Box("Run Random", runDOE);
 doe_box = H List Box(textBox("Num DOE Runs"), doe_size_spin, run_doe_button);
+
 
 // button to calculate design
 calc_button = Button Box("Calculate", getValues(nPeople, nWeeks, nlabEquip, 1));
