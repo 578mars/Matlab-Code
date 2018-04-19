@@ -34,8 +34,8 @@ habitat_info = system(exe_run);
 
 %Read in the data from the optimization run
 barracks_data = dlmread('Optimized_Habitat.txt');
-barracks_length = barracks_data(1);
-barracks_width = barracks_data(2);
+barracks_length = barracks_data(1) + 1;
+barracks_width = barracks_data(2) + 1;
 barracks_height = barracks_data(3);
 barracks_material_vol = barracks_data(4);
 
@@ -45,7 +45,7 @@ vol_per_meal = .3*.15*.03; %m^3
 vol_per_day_pp = 3*vol_per_meal; %volume of food for one person per day
 
 %Calculate the volume of food necessary for the trip to Mars
-vol_food4trip = vol_per_day_pp*people*270; %Trip is approximately 9 months (270 days)
+vol_food4trip = vol_per_day_pp*people*270*2; %Trip is approximately 9 months (270 days) * 2 for both ways
 
 %Calculate the required FARM AREA. If mission is less than 90 days (~13 weeks) on Mars,
 %then a farm is definitely unnecessary (m^2)
