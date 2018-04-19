@@ -34,8 +34,8 @@ habitat_info = system(exe_run);
 
 %Read in the data from the optimization run
 barracks_data = dlmread('Optimized_Habitat.txt');
-barracks_length = barracks_data(1);
-barracks_width = barracks_data(2);
+barracks_length = barracks_data(1) + 1;
+barracks_width = barracks_data(2) + 1;
 barracks_height = barracks_data(3);
 barracks_material_vol = barracks_data(4);
 
