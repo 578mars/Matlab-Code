@@ -6,17 +6,17 @@ dt = New Table("checked points",
 	New Column("Duration", numeric),
 	New Column("N_lab_equip", numeric),
 	
-	New Column("Barracks_len", numeric),
-	New Column("Barracks_width", numeric),
-	New Column("Barracks_height", numeric),
+	New Column("Habitation_len", numeric),
+	New Column("Habitation_width", numeric),
+	New Column("Habitation_height", numeric),
 	
-	New Column("Barracks_Vol", numeric),
+	New Column("Habitation_Vol", numeric),
 	New Column("Farm_Radius", numeric),
 	New Column("Lab_Radius", numeric),
 	New Column("Storage_Radius", numeric),
 	
 	New Column("Tube_Radius", numeric),
-	New Column("Tube_Length", numeric),
+	New Column("Tube_Len", numeric),
 	
 	New Column("N_Farms", numeric),
 	New Column("N_Labs", numeric),
@@ -237,8 +237,8 @@ getValues = Function({num_people, duration, lab_equip, draw_station_flag, colori
 	if(draw_station_flag,
 		drawStation(barracks_length, barracks_width, barracks_height, lab_rad, farm_rad, storage_rad, tube_rad, tube_length, opt_num_farm_domes, opt_num_lab_domes, opt_num_storage_domes, num_panels);
 	);
-	dt << add rows({:N_people=num_people, :Duration=duration, :N_lab_equip=lab_equip, :Barracks_len = barracks_length, :Barracks_width = barracks_width, Barracks_height = barracks_height,
-					:Barracks_Vol = barracks_length*barracks_width*barracks_height, :Farm_Radius=farm_rad, :Lab_Radius=lab_rad, :Storage_Radius=storage_rad, :Tube_Radius = tube_rad, :Tube_Length = tube_length,
+	dt << add rows({:N_people=num_people, :Duration=duration, :N_lab_equip=lab_equip, :Habitation_len = barracks_length, :Habitation_width = barracks_width, :Habitation_height = barracks_height,
+					:Habitation_Vol = barracks_length*barracks_width*barracks_height, :Farm_Radius=farm_rad, :Lab_Radius=lab_rad, :Storage_Radius=storage_rad, :Tube_Radius = tube_rad, :Tube_Len = tube_length,
 					:N_Farms=opt_num_farm_domes, :N_Labs=opt_num_lab_domes,:N_Storage=opt_num_storage_domes, :N_Solar_Panels=num_panels, :name("Cost(billions)")=Total_cost/1000000000});
 	dt << clear select;
 	dt << select rows(nRows(dt));
@@ -318,7 +318,7 @@ showSelected = Function({},
 	farm_rad= :Farm_Radius[(dt<<get selected rows)][number_rows_selected];
 	storage_rad = :Storage_Radius[(dt<<get selected rows)][number_rows_selected];
 	tube_rad = :Tube_Radius[(dt<<get selected rows)][number_rows_selected];
-	tube_length = :Tube_Length[(dt<<get selected rows)][number_rows_selected];
+	tube_length = :Tube_Len[(dt<<get selected rows)][number_rows_selected];
 	opt_num_farm_domes = :N_Farms[(dt << get selected rows)][number_rows_selected];
 	opt_num_lab_domes = :N_Labs[(dt<<get selected rows)][number_rows_selected];
 	opt_num_storage_domes = :N_Storage[(dt<<get selected rows)][number_rows_selected];
